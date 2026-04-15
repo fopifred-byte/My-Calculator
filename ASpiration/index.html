@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my Calculator</title>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    #calculator{
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+    }
+
+    #display{
+        width: 100%;
+        height: 60px;
+        font-size: 28px;
+        text-align: right;
+        background-color: #000;
+        color:#00ff00;
+        border:2px solid #00ff00;
+        padding: 10px;
+        margin-bottom: 5px;
+        display:block;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+
+    #buttons{
+        display: grid;
+        grid-template-columns: repeat(4, 70px);
+        gap: 10px
+    }
+
+    button{
+        height: 70px;
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #555;
+        color: white;
+        cursor: pointer;
+    }
+
+    button.red{
+        background-color: #e74c3c;
+ }
+
+    button.green{
+        background-color: #2ecc71;
+        grid-column: span 4;
+        height: 50px;
+    }
+
+    button:hover{
+        background-color: #777;
+        cursor: pointer;
+    }
+
+    button.red{
+        background-color: #e74c3c;
+    }
+
+    @media(max-width:400px){
+        #calculator{
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #buttons{
+            grid-template-columns: repeat(4,60px);
+        }
+
+        button {
+            height: 60px;
+            font-size: 16px;
+        }
+
+        #display{
+            font-size: 18px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button.white{
+            background-color: white;
+
+        }
+    }
+         button.purple{
+            background-color: #9b59b6;
+         }
+         #history{
+            width: 258px;
+            color: #888;
+            font-size: 14px;
+            text-align: right;
+            min-height: 20px;
+            margin-bottom: 5px;
+         }
+
+         #brand{
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+         }
+
+
+        
+
+
+</style>
+<body> 
+    <div id="calculator">
+        <div id="history"></div>
+        <input type = "text" id="display" readonly/>
+        
+        
+       <div id="buttons">
+        <button class="red" onclick="pressButton('C')">C</button>
+        <button onclick="pressButton('+/-')">+/-</button>
+        <button onclick="pressButton('%')">%</button>
+        <button onclick="pressButton('/')">/</button>
+
+        <button onclick="pressButton('7')">7</button>
+           <button onclick="pressButton('8')">8</button>
+             <button onclick="pressButton('9')">9</button>
+              <button onclick="pressButton('+')">+</button>
+
+               <button onclick="pressButton('4')">4</button>
+                <button onclick="pressButton('5')">5</button>
+                 <button onclick="pressButton('6')">6</button>
+                  <button onclick="pressButton('-')">-</button>
+
+                   <button onclick="pressButton('1')">1</button>
+                     <button onclick="pressButton('2')">2</button>
+                      <button onclick="pressButton('3')">3</button>
+                       <button onclick="pressButton('*')">*</button>
+
+
+                                <button onclick="pressButton('square root')">√x</button>
+                                  <button class="purple" onclick="pressButton('power')">x²</button>
+                                    <button class="purple" onclick="pressButton('sin')">sin</button>
+                                     <button class="purple" onclick="pressButton('cos')">cos</button>
+
+
+                                      <button class="purple" onclick="pressButton('tan')">tan</button>
+                                       <button onclick="pressButton('0')">0</button>
+                                       <button onclick="pressButton('.')">.</button>
+                                        <button class="orange" onclick="pressButton('back')">DEL</button>
+
+                                         <button class="green" onclick="pressButton('=')">=</button>
+
+    </div>
+     <div id="brand">Built by FredTech</div>
+</div>                                                                                                                             
+
+    <script>
+        const display = document.getElementById('display');
+        function pressButton(value){
+            if (value === 'C'){
+                display.value = '';
+            } else if(value === 'sin'){
+                display.value = Math.sin(parseFloat(display.value));
+            } else if(value === 'cos'){
+                display.value = Math.cos(parseFloat(display.value));
+            } else if(value === 'tan'){
+                display.value = Math.tan(parseFloat(display.value));
+            } else if(value === 'power'){
+                display.value = Math.pow(parseFloat(display.value),2);
+            } else if (value === '+/-'){
+                display.value = parseFloat(display.value) * -1;
+            } else if (value === '%'){
+                display.value = parseFloat(display.value)/100;
+
+            } else if(value === 'square root') {
+                display.value = Math.sqrt(display.value);
+
+            } else if (value ==='back') {
+                display.value = display.value.slice(0, -1);
+
+            } else if(value === '='){
+              try{ 
+                let calculation = display.value;
+                let result = eval(calculation);
+                document.getElementById('history').innerText = calculation + ' =';
+                display.value = result;
+              }catch(e){
+                display.value = 'Error';
+              }
+
+            }  else{
+                display.value += value;
+            } 
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+
+            if (key >= '0' && key <= '9'){
+                pressButton(key);
+            }else if(key === '+' || key === '-'|| key === '*' || key === '/'){
+                pressButton(key);
+            } else if(key === 'Enter'){
+                pressButton('=');
+            }else if(key === 'Backspace'){
+                pressButton('back');
+            } else if(key === 'Escape'){
+                pressButton('C');
+            } else if(key === '.'){
+                pressButton('.');
+            }
+        })
+
+        display.addEventListener('input', function() {
+            try{
+                let result = eval(display.value);
+                document.getElementById('history') .innerText = result;
+            }catch(e) {
+                document.getElementById('history') .innerText = '';
+            }
+        })
+
+        
+    </script>
+</body>
+</html>
+
